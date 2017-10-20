@@ -138,18 +138,14 @@ router.route('/contact')
 
 
 router.post('/login', function(req, res) {
-    passport.authenticate('local', function(err, user, info) {
-        if ( err ) {
-            res.status(401).end();
-            return;
-        }
-        // User does not exist
-        if ( ! user ) {
-             res.status(401).json({message: "User doesn't exist"});
-            return;
-        }
-        
-    });
+     passport.authenticate('local', function(err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return res.json({message: "User does not exist"}); }
+        req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        return res.json({message: "Logged In"});
+        });
+    })(req, res, next);
 });
 
 router.route('/logout')
