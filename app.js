@@ -76,6 +76,14 @@ app.get('/', function(request, response) {
  response.send('Demo-login');
 });
 
+app.get('/login_fail', function(request, response) {
+ response.json({ message: 'Login Failed!' });
+});
+
+app.get('/login_success', checkAuthentication, function(request, response) {
+ res.status(200).json({status: "Success"});
+});
+
 
 var router = express.Router();             
 
@@ -135,8 +143,14 @@ router.route('/contact')
 
     });
 
+//LOGIN
+
+  router.post('/login',  passport.authenticate('local', { successRedirect: '/login_success',
+                                   failureRedirect: '/login_fail',
+                                   failureFlash: 'Invalid username or password.' }));
 
 
+/*
 router.post('/login', function(req, res) {
      passport.authenticate('local', function(err, user, info) {
         if (err) { return next(err); }
@@ -147,7 +161,7 @@ router.post('/login', function(req, res) {
         });
     })(req, res, next);
 });
-
+*/
 router.route('/logout')
 
     .get(function(req, res) {

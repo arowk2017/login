@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   username:string = '';
   password:string = '';
   model = new Login('','');
+  error_message:string = '';
 
   constructor(private fb: FormBuilder, public http: Http, private _router: Router) { 
     this.rForm = fb.group({
@@ -41,9 +42,13 @@ export class LoginComponent implements OnInit {
         
         let data = res.json();
         console.log(data);
-        //this._router.navigate(['/home']);
+        this._router.navigate(['/home']);
         
-      }
+      },
+   
+    err => {
+      this.error_message = "Username/Password is invalid";
+    }
     );
   }
 
@@ -59,7 +64,7 @@ export class LoginComponent implements OnInit {
         
         let data = res.json();
         console.log(data);
-        //this._router.navigate(['/home']);
+        this._router.navigate(['/home']);
         
       }
     );
