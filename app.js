@@ -77,11 +77,11 @@ app.get('/', function(request, response) {
 });
 
 app.get('/login_fail', function(request, response) {
- response.json({ message: 'Login Failed!' });
+ response.status(401).json({ message: 'Login Failed!' });
 });
 
 app.get('/login_success', checkAuthentication, function(request, response) {
- res.status(200).json({status: "Success"});
+ response.status(200).json({status: "Success"});
 });
 
 
