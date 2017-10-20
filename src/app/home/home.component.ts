@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
 
   logout() {
     
-    this.http.get('/api/logout').subscribe(
+    this.http.get('https://arowk2017-demo-login.herokuapp.com/api/logout').subscribe(
       (res:any)=>{
         this._router.navigate(['/']);
       },

@@ -1,2 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/scss/bootstrap";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import '~@angular/material/_theming';
+
+.mat-ink-bar {
+    background-color: #2b99c1 !important;
+}
+
+.mat-tab-label:focus {
+    background-color: rgba(43,153,193,.3) !important;
+}
+
+.mat-tab-label {
+	font-size: 18px;
+}

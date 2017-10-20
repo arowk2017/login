@@ -29,19 +29,37 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  submitContact(value: any){
+  submitLogin(value: any){
     // Once the form is submitted and we get the users email and password we’ll format our request based on the Auth0 API.
     let form = {
       'username' : value.username,
       'password' : value.password,  
     }
      
-    this.http.post('', form).subscribe(
+    this.http.post('https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
       (res:any)=>{
         
         let data = res.json();
+        console.log(data);
+        //this._router.navigate(['/home']);
         
-        this._router.navigate(['/home']);
+      }
+    );
+  }
+
+  submitRegister(value: any){
+    // Once the form is submitted and we get the users email and password we’ll format our request based on the Auth0 API.
+    let form = {
+      'username' : value.username,
+      'password' : value.password,  
+    }
+     
+    this.http.post('https://arowk2017-demo-login.herokuapp.com/api/users', form).subscribe(
+      (res:any)=>{
+        
+        let data = res.json();
+        console.log(data);
+        //this._router.navigate(['/home']);
         
       }
     );

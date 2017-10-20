@@ -1,6 +1,6 @@
 .card{
         top: 50%;
-        width: 20rem;
+        width: 30rem;
 }
 
 @media screen and (max-width: 30em){
@@ -41,4 +41,20 @@
     text-decoration: none;
 	background: #2b99c1;
     color: #fff;
+}
+
+
+#tabs .mat-tab-label {
+ font-style: bold !important;
+    font-size: 1em !important;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #2b99c1 !important;
+    
+}
+
+.mat-tab-label, .mat-tab-label-active{
+ font-style: bold !important;
+    font-size: 1em !important;
 }

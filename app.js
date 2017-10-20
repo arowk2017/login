@@ -29,6 +29,32 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
 
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    Users.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser(Users.serializeUser());
+passport.deserializeUser(Users.deserializeUser());
+
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(session({ secret: 'codecliquesoftwarellc',
+    saveUninitialized: true,
+    resave: true })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
+
 app.get('/', function(request, response) {
  response.send('Demo-login');
 });
@@ -92,6 +118,25 @@ router.route('/contact')
 
     });
 
+router.post('/login',  passport.authenticate('local', { successRedirect: '/',
+                                   failureRedirect: '/login',
+                                   failureFlash: 'Invalid username or password.' }));
+
+router.route('/logout')
+
+    .get(function(req, res) {
+
+        req.logout();
+        req.session.destroy(function (err) {
+        if (!err) {
+            res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
+        } else {
+            // handle error case...
+        }
+          });
+        
+    });
+
 
 
 // REGISTER OUR ROUTES -------------------------------
@@ -120,6 +165,14 @@ app.use(function(err, req, res, next) {
 function handleError(res) {
     return function(error) {
         return res.status(500).send({error: error.message});
+    }
+}
+
+function checkAuthentication(req,res,next){
+    if(req.isAuthenticated()){
+        next();
+    } else{
+      res.status(401).end();
     }
 }
 
