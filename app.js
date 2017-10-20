@@ -135,9 +135,22 @@ router.route('/contact')
 
     });
 
-router.post('/login',  passport.authenticate('local', { successRedirect: '/',
-                                   failureRedirect: '/login',
-                                   failureFlash: 'Invalid username or password.' }));
+
+
+router.post('/login', function(req, res) {
+    passport.authenticate('local', function(err, user, info) {
+        if ( err ) {
+            res.status(401).end();
+            return;
+        }
+        // User does not exist
+        if ( ! user ) {
+             res.status(401).json({message: "User doesn't exist"});
+            return;
+        }
+        
+    })(req, res, next);
+});
 
 router.route('/logout')
 
