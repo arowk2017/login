@@ -174,7 +174,7 @@ router.route('/logout')
         req.logout();
         req.session.destroy(function (err) {
         if (!err) {
-            res.status(200).clearCookie('connect.sid', {path: '/'}).json({status: "Success"});
+            res.status(200).json({status: "Success"});
         } else {
             // handle error case...
         }

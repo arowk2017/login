@@ -35,12 +35,12 @@ export class LoginComponent implements OnInit {
     let form = {
       'username' : value.username,
       'password' : value.password,  
-    }
+    };
      
     this.http.post('https://arowk2017-demo-login.herokuapp.com/api/login', form).map((res: Response) => {
                 if (res) {
                     if (res.status === 201) {
-                        return [{ status: res.status, json: res }]
+                        return [{ status: res.status, json: res }];
                     }
                     else if (res.status === 200) {
                         let data = res.json();
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
     let form = {
       'username' : value.username,
       'password' : value.password,  
-    }
+    };
      
     this.http.post('https://arowk2017-demo-login.herokuapp.com/api/users', form).subscribe(
       (res:any)=>{
