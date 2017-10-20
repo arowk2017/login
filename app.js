@@ -149,7 +149,7 @@ router.post('/login', function(req, res) {
             return;
         }
         
-    })(req, res, next);
+    });
 });
 
 router.route('/logout')
