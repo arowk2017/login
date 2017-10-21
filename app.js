@@ -76,6 +76,7 @@ app.use(session({
 }));
 
 app.use(function (req, res, next) {
+    console.log(req.session);
   if (!req.session) {
     return next(new Error('oh no')) // handle error
   }
