@@ -58,7 +58,7 @@ var redisOptions = {
             //port: redisUrl.port,
             //db: redisAuth[0],
            //pass: redisAuth[1],
-     //client: redis
+     client: redis,
      //url: process.env.REDISTOGO_URL,
      logErrors: true
      //ttl: SESSION_TTL
