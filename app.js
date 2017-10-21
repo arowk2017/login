@@ -269,7 +269,7 @@ function checkAuthentication(req,res,next){
     if(req.isAuthenticated()){
         next();
     } else{
-        console.log("here");
+        console.log("here1");
       res.status(401).end();
     }
 }
