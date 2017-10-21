@@ -59,12 +59,11 @@ var redisOptions = {
 
 var redisStore = new RedisStore(redisOptions);
 app.use(cookieParser()); 
-app.enable('trust proxy');
 app.use(session({
     store: redisStore,
      secret: 'codecliquesoftwarellc',
-     unset: 'destroy',
-     proxy: true
+     saveUninitialized: true,
+    resave: true
 }));
 
 
