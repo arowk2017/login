@@ -49,11 +49,17 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 
     //var rtg   = require("url").parse(process.env.REDISTOGO_URL);
     //var redis = require("redis").createClient(rtg.port, rtg.hostname);
-var redis = require("redis").createClient(process.env.REDISTOGO_URL);
+//var redis = require("redis").createClient(process.env.REDISTOGO_URL);
+var redisUrl = url.parse(process.env.REDISTOGO_URL),
+        redisAuth = redisUrl.auth.split(':'); 
 
 var redisOptions = {
+    host: redisUrl.hostname,
+            port: redisUrl.port,
+            db: redisAuth[0],
+            pass: redisAuth[1],
      //client: redis
-     url: process.env.REDISTOGO_URL,
+     //url: process.env.REDISTOGO_URL,
      logErrors: true
      //ttl: SESSION_TTL
  };
