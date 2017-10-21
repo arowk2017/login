@@ -49,7 +49,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 
     //var rtg   = require("url").parse(process.env.REDISTOGO_URL);
     //var redis = require("redis").createClient(rtg.port, rtg.hostname);
-//var redis = require("redis").createClient(process.env.REDISTOGO_URL);
+var redis = require("redis").createClient(process.env.REDISTOGO_URL);
 //var redisUrl = url.parse(process.env.REDISTOGO_URL),
         //redisAuth = redisUrl.auth.split(':'); 
 
