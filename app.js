@@ -36,6 +36,14 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 
+
+app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'html');
+app.use(allowCrossDomain);
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({'extended':'true'}));
+
 /////////////////////////////////
 
 var redis;
@@ -66,13 +74,6 @@ app.use(session({
 app.use(session);
 
 /////////////////////////////////////
-app.engine('html', require('ejs').renderFile);
-app.set('view engine', 'html');
-app.use(allowCrossDomain);
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({'extended':'true'}));
-
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
