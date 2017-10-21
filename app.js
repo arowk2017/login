@@ -10,7 +10,8 @@ var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var Users = require('./models/users');
 var cors = require('cors');
-
+var redis = require('redis'); 
+var RedisStore = require('connect-redis')(session);
 var app = express();
 
 //////////////////////////////
@@ -37,6 +38,29 @@ mongoose.connect(process.env.MONGODB_URI)
 
 /////////////////////////////////
 
+
+var client = redis.createClient(process.env.REDISTOGO_URL);
+
+var redisOptions = {
+     client: client,
+     url: process.env.REDISTOGO_URL,
+     //ttl: SESSION_TTL
+ };
+
+var redisStore = new RedisStore(redisOptions);
+
+app.use(session({
+    store: redisStore,
+     secret: 'codecliquesoftwarellc',
+     unset: 'destroy',
+     proxy: true
+}));
+
+
+// and use it in application
+app.use(session);
+
+/////////////////////////////////////
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(allowCrossDomain);
@@ -65,9 +89,7 @@ passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 
 app.use(cookieParser()); // read cookies (needed for auth)
-app.use(session({ secret: 'codecliquesoftwarellc',
-    saveUninitialized: true,
-    resave: true })); // session secret
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
