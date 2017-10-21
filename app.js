@@ -56,7 +56,7 @@ if (process.env.REDISTOGO_URL) {
 
 var redisOptions = {
      client: client,
-     url: process.env.REDISTOGO_URL,
+     url: process.env.REDISTOGO_URL
      //ttl: SESSION_TTL
  };
 
@@ -71,7 +71,7 @@ app.use(session({
 
 
 // and use it in application
-app.use(session);
+//app.use(session);
 
 /////////////////////////////////////
 
