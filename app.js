@@ -58,7 +58,8 @@ var redisOptions = {
  };
 
 var redisStore = new RedisStore(redisOptions);
-
+app.use(cookieParser()); 
+app.enable('trust proxy');
 app.use(session({
     store: redisStore,
      secret: 'codecliquesoftwarellc',
@@ -91,7 +92,7 @@ passport.use(new LocalStrategy(
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());
 
-app.use(cookieParser()); // read cookies (needed for auth)
+// read cookies (needed for auth)
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
