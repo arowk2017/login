@@ -47,17 +47,13 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-
-    var users = new Users();      
-        
-        var hash_pass = users.generateHash(password);
-console.log(hash_pass);
+    
     Users.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
       }
-      if (!user.validPassword(hash_pass)) {
+      if (!user.validPassword(password)) {
         return done(null, false, { message: 'Incorrect password.' });
       }
       return done(null, user);
