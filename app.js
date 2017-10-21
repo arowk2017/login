@@ -53,7 +53,8 @@ var redis = require("redis").createClient(process.env.REDISTOGO_URL);
 
 var redisOptions = {
      //client: redis
-     url: process.env.REDISTOGO_URL
+     url: process.env.REDISTOGO_URL,
+     logErrors: true
      //ttl: SESSION_TTL
  };
 
@@ -187,6 +188,7 @@ router.route('/current_user')
     });
 
 //LOGIN
+/*
 router.post('/login', passport.authenticate('local',
   function(req, res) {
     // If this function gets called, authentication was successful.
@@ -196,7 +198,9 @@ router.post('/login', passport.authenticate('local',
     res.json({message:"Login Success", username: req.user,
   userid: req.user._id});
   }));
-/*
+
+  */
+
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -229,7 +233,7 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-*/
+
 /*
   router.post('/login',  passport.authenticate('local', { successRedirect: '/login_success',
                                    failureRedirect: '/login_fail',
