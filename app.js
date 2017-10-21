@@ -54,10 +54,10 @@ var redisUrl = url.parse(process.env.REDISTOGO_URL),
         redisAuth = redisUrl.auth.split(':'); 
 
 var redisOptions = {
-   host: redisUrl.hostname,
-            port: redisUrl.port,
-            db: redisAuth[0],
-           pass: redisAuth[1],
+   //host: redisUrl.hostname,
+            //port: redisUrl.port,
+            //db: redisAuth[0],
+           //pass: redisAuth[1],
      //client: redis
      //url: process.env.REDISTOGO_URL,
      logErrors: true
