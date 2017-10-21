@@ -107,9 +107,11 @@ app.get('/login_fail', function(request, response) {
  response.status(401).json({ message: 'Login Failed!' });
 });
 
+/*
 app.get('/login_success', checkAuthentication, function(request, response) {
  response.status(200).json({status: "Success"});
 });
+*/
 
 
 var router = express.Router();             
@@ -171,11 +173,39 @@ router.route('/contact')
     });
 
 //LOGIN
+app.post('/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) {
+      console.log("Error: " + err); 
+      return next(err); 
+    }
+    if (!user) {
+      console.log("Error: User does not exist"); 
+      return res.redirect('/login_fail'); 
+    }
+    req.logIn(user, function(err_login) {
+      if (err_login) {
+        console.log("Error while login: " + err_login); 
+        return next(err_login); 
+      }
 
+      req.session.messages = "Login successfull";
+      req.session.authenticated = true;
+      req.authenticated = true;
+
+      if (req.session.returnTo){
+        return res.redirect(req.session.returnTo);
+      }
+      return res.status(200).json({status: "Success"});
+    });
+  })(req, res, next);
+});
+
+/*
   router.post('/login',  passport.authenticate('local', { successRedirect: '/login_success',
                                    failureRedirect: '/login_fail',
                                    failureFlash: 'Invalid username or password.' }));
-
+*/
 
 /*
 router.post('/login', function(req, res) {
