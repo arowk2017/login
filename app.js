@@ -52,8 +52,8 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 var redis = require("redis").createClient(process.env.REDISTOGO_URL);
 
 var redisOptions = {
-     client: redis
-     //url: process.env.REDISTOGO_URL
+     //client: redis
+     url: process.env.REDISTOGO_URL
      //ttl: SESSION_TTL
  };
 
