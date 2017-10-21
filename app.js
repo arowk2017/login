@@ -63,7 +63,8 @@ app.use(session({
     store: redisStore,
      secret: 'codecliquesoftwarellc',
      saveUninitialized: true,
-    resave: true
+    resave: true,
+    cookie : {secure : true}
 }));
 
 
