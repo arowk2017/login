@@ -37,41 +37,12 @@ export class LoginComponent implements OnInit {
       'password' : value.password,  
     };
      
-    this.http.post('https://arowk2017-demo-login.herokuapp.com/api/login', form).map((res: Response) => {
-                if (res) {
-                    if (res.status === 201) {
-                        return [{ status: res.status, json: res }];
-                    }
-                    else if (res.status === 200) {
-                        let data = res.json();
-                          console.log(data);
-                          this._router.navigate(['/home']);
-                    }
-                }
-            }).catch((error: any) => {
-                if (error.status === 500) {
-                    return Observable.throw(new Error(error.status));
-                }
-                else if (error.status === 400) {
-                    return Observable.throw(new Error(error.status));
-                }
-                else if (error.status === 409) {
-                    return Observable.throw(new Error(error.status));
-                }
-                else if (error.status === 406) {
-                    return Observable.throw(new Error(error.status));
-                }
-                  else if (error.status === 401) {
-                    this.error_message = "Username/Password is invalid";
-                }
-            });
-    /*
-    subscribe(
+    this.http.post('https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
       (res:any)=>{
-        
+        console.log(res);
         let data = res.json();
-        console.log(data);
-        this._router.navigate(['/home']);
+        
+        //this._router.navigate(['/home']);
         
       },
    
@@ -79,7 +50,9 @@ export class LoginComponent implements OnInit {
       this.error_message = "Username/Password is invalid";
     }
     )
-  */
+    
+    
+  
     
   }
 

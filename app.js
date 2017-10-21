@@ -51,7 +51,7 @@ passport.use(new LocalStrategy(
     var users = new Users();      
         
         var hash_pass = users.generateHash(password);
-
+console.log(hash_pass);
     Users.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
       if (!user) {
