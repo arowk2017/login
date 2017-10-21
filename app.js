@@ -46,13 +46,10 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 
 /////////////////////////////////
 
-var redis;
-if (process.env.REDISTOGO_URL) {
+
     var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-    redis = require("redis").createClient(rtg.port, rtg.hostname);
-} else {
-    redis = require("redis").createClient();
-}
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+
 
 var redisOptions = {
      //client: client,
