@@ -7,7 +7,7 @@ var session = require('express-session');
 var passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy;
 var flash = require('connect-flash');
-var cookieParser = require('cookie-parser');
+//var cookieParser = require('cookie-parser');
 var Users = require('./models/users');
 var cors = require('cors');
  
@@ -52,18 +52,20 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 var redis = require("redis").createClient(process.env.REDISTOGO_URL);
 
 var redisOptions = {
-     //client: client,
-     url: process.env.REDISTOGO_URL
+     client: redis
+     //url: process.env.REDISTOGO_URL
      //ttl: SESSION_TTL
  };
 
 var redisStore = new RedisStore(redisOptions);
-app.use(cookieParser()); 
+//app.use(cookieParser()); 
+app.set('trust proxy', 1);
 app.use(session({
     store: redisStore,
      secret: 'codecliquesoftwarellc',
-     saveUninitialized: false,
-    resave: false
+     resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true }
 }));
 
 
@@ -183,6 +185,16 @@ router.route('/current_user')
     });
 
 //LOGIN
+router.post('/login', passport.authenticate('local',
+  function(req, res) {
+    // If this function gets called, authentication was successful.
+    // `req.user` contains the authenticated user.
+    // Then you can send your json as response.
+    console.log(req.user);
+    res.json({message:"Login Success", username: req.user,
+  userid: req.user._id});
+  }));
+/*
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
@@ -207,14 +219,15 @@ router.post('/login', function(req, res, next) {
         return res.redirect(req.session.returnTo);
       }
 
-      req.session.save(() => {
+
       return res.status(200).json({status: "Success"});
-    })
+    
       
     });
   })(req, res, next);
 });
 
+*/
 /*
   router.post('/login',  passport.authenticate('local', { successRedirect: '/login_success',
                                    failureRedirect: '/login_fail',
