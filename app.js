@@ -75,7 +75,12 @@ app.use(session({
   cookie: { secure: true }
 }));
 
-
+app.use(function (req, res, next) {
+  if (!req.session) {
+    return next(new Error('oh no')) // handle error
+  }
+  next() // otherwise continue
+})
 // and use it in application
 //app.use(session);
 
