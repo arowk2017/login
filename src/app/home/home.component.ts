@@ -9,9 +9,18 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  username:string;
   constructor(private http: Http,  private _router: Router) { }
 
   ngOnInit() {
+    this.http.get('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/current_user').subscribe(
+      (res:any)=>{
+        let data = res.json();
+                          console.log(data);
+      },
+    err => console.log(err)
+    
+    )
   }
 
   logout() {

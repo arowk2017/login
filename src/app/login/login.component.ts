@@ -39,18 +39,41 @@ export class LoginComponent implements OnInit {
      
     this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
       (res:any)=>{
-        console.log(res);
-        let data = res.json();
         
-        //this._router.navigate(['/home']);
-        
+        if (res.status === 200) {
+                        let data = res.json();
+                          console.log(data);
+                          this._router.navigate(['/home']);
+                    }
       },
    
     err => {
-      this.error_message = "Username/Password is invalid";
+      if (err.status === 401) {
+                    this.error_message = "Username/Password is invalid";
+                    return Observable.throw(new Error(err.status));
+                }
     }
     )
     
+    
+    /*
+    map((res: Response) => {
+                console.log(res.status);
+      
+      if (res) {
+                     if (res.status === 200) {
+                        let data = res.json();
+                          console.log(data);
+                          this._router.navigate(['/home']);
+                    }
+                }
+            }).catch((error: any) => {
+                if (error.status === 401) {
+                    this.error_message = "Username/Password is invalid";
+                    return Observable.throw(new Error(error.status));
+                }
+            });
+    */
     
   
     

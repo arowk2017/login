@@ -162,14 +162,15 @@ router.route('/users')
                 });
     });
 
-router.route('/contact')
+router.route('/current_user')
 
     .post(function(req, res) {
 
     })
       
-    .get(function(req, res) {
+    .get(checkAuthentication, function(req, res) {
 
+        res.json({username: req.username});
     });
 
 //LOGIN
