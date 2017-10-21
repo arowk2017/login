@@ -90,18 +90,20 @@ passport.use(new LocalStrategy(
   }
 ));
 
-passport.serializeUser(Users.serializeUser());
-passport.deserializeUser(Users.deserializeUser());
-/*
+//passport.serializeUser(Users.serializeUser());
+//passport.deserializeUser(Users.deserializeUser());
+
 passport.serializeUser(function(user, done) {
+    console.log(user);
     done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
+    console.log("user id: " + id);
     User.findById(id, function(err, user) {
         done(err, user);
  });
   });
-*/
+
 
 // read cookies (needed for auth)
 
