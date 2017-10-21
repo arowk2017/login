@@ -197,7 +197,11 @@ router.post('/login', function(req, res, next) {
       if (req.session.returnTo){
         return res.redirect(req.session.returnTo);
       }
+
+      req.session.save(() => {
       return res.status(200).json({status: "Success"});
+    })
+      
     });
   })(req, res, next);
 });
