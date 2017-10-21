@@ -238,7 +238,7 @@ function checkAuthentication(req,res,next){
     if(req.isAuthenticated()){
         next();
     } else{
-        
+        console.log("here");
       res.status(401).end();
     }
 }
