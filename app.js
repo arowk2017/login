@@ -10,7 +10,7 @@ var flash = require('connect-flash');
 var cookieParser = require('cookie-parser');
 var Users = require('./models/users');
 var cors = require('cors');
-var redis = require('redis'); 
+ 
 var RedisStore = require('connect-redis')(session);
 var app = express();
 
@@ -38,8 +38,13 @@ mongoose.connect(process.env.MONGODB_URI)
 
 /////////////////////////////////
 
-
-var client = redis.createClient(process.env.REDISTOGO_URL);
+var redis;
+if (process.env.REDISTOGO_URL) {
+    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+    redis = require("redis").createClient(rtg.port, rtg.hostname);
+} else {
+    redis = require("redis").createClient();
+}
 
 var redisOptions = {
      client: client,
