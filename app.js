@@ -13,7 +13,7 @@ var cors = require('cors');
  
 var RedisStore = require('connect-redis')(session);
 var app = express();
-
+app.use(cors({credentials: true, origin: 'localhost:4200'}));
 //////////////////////////////
 /*
 var allowCrossDomain = function(req, res, next) {
@@ -126,7 +126,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 //app.use(cors()); 
-app.use(cors({credentials: true, origin: 'localhost:4200'}));
+
 
 app.get('/', function(request, response) {
  response.send('Demo-login');
