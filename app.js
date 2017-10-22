@@ -122,10 +122,9 @@ passport.deserializeUser(function(id, done) {
 
 
 // read cookies (needed for auth)
-
+ 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash());
 //app.use(cors()); 
 
 
