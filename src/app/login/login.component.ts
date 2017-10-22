@@ -5,6 +5,7 @@ import { Headers, RequestOptions, RequestOptionsArgs, Http, Response, Request, R
 import { Router } from '@angular/router';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { LoginService } from '../login.service';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   model = new Login('','');
   error_message:string = '';
 
-  constructor(private fb: FormBuilder, public http: Http, private _router: Router) { 
+  constructor(private fb: FormBuilder, public http: Http, private _router: Router,  private loginService: LoginService) { 
     this.rForm = fb.group({
         'username' : [null, Validators.required],
         'password' : [null, Validators.required],
@@ -37,16 +38,19 @@ export class LoginComponent implements OnInit {
       'password' : value.password,  
     };
      
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    let options = new RequestOptions({ headers: headers, withCredentials: true });
+    //let headers = new Headers();
+    //headers.append('Content-Type', 'application/json');
+    //let options = new RequestOptions({ headers: headers, withCredentials: true });
 
-    this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form, options).subscribe(
+    //this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form, options).subscribe(
+          this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
+
       (res:any)=>{
         
         if (res.status === 200) {
                         let data = res.json();
-                          console.log(data);
+                          //console.log(data);
+                          this.loginService.saveToken(data.token);
                           this._router.navigate(['/home']);
                     }
       },
@@ -95,6 +99,7 @@ export class LoginComponent implements OnInit {
         
         let data = res.json();
         console.log(data);
+        this.loginService.saveToken(data.token);
         this._router.navigate(['/home']);
         
       }

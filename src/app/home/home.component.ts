@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Router } from '@angular/router';
+import { LoginService } from '../login.service';
 
 @Component({
   selector: 'app-home',
@@ -9,27 +10,15 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  username:string;
-  constructor(private http: Http,  private _router: Router) { }
+  token:any;
+  constructor(private http: Http,  private _router: Router,  private loginService: LoginService) { }
 
   ngOnInit() {
-    this.http.get('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/current_user').subscribe(
-      (res:any)=>{
-        let data = res.json();
-                          console.log(data);
-      },
-    err => console.log(err)
-    
-    )
+    this.token = this.loginService.currentUser();
   }
 
   logout() {
-    
-    this.http.get('https://arowk2017-demo-login.herokuapp.com/api/logout').subscribe(
-      (res:any)=>{
-        this._router.navigate(['/']);
-      },
-    err => console.log(err)
-    
-    )  }
+    this.loginService.logout();
+    this._router.navigate(['/']);
+      }
 }

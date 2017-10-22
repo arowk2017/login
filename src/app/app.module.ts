@@ -9,7 +9,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ROUTES } from './app.routes';
-
+import { LoginService } from './login.service';
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
 
 @NgModule({
   declarations: [
@@ -24,9 +25,10 @@ import { ROUTES } from './app.routes';
     ReactiveFormsModule,
     FormsModule,
     MatTabsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AsyncLocalStorageModule
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

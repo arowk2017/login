@@ -3,17 +3,21 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
-var Users = require('./models/users');
-var cors = require('cors');
+var session = require('express-session');
 var passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
+//var cookieParser = require('cookie-parser');
+var Users = require('./models/users');
+var cors = require('cors');
+ 
+var RedisStore = require('connect-redis')(session);
 var app = express();
-
-var jwt = require('express-jwt');
-var auth = jwt({
-  secret: process.env.LOGIN_SECRET,
-  userProperty: 'payload'
-});
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 
+}
+app.options('*', cors(corsOptions));
 //app.use(cors({credentials: true, origin: 'localhost:4200'}));
 //////////////////////////////
 /*
@@ -55,7 +59,7 @@ app.use(bodyParser.urlencoded({'extended':'true'}));
 var redis = require("redis").createClient(process.env.REDISTOGO_URL);
 //var redisUrl = url.parse(process.env.REDISTOGO_URL);
         //var redisAuth = redisUrl.auth.split(':'); 
-/*
+
 var redisOptions = {
    //host: redisUrl.hostname,
             //port: redisUrl.port,
@@ -87,7 +91,7 @@ app.use(function (req, res, next) {
 })
 // and use it in application
 //app.use(session);
-*/
+
 /////////////////////////////////////
 
 passport.use(new LocalStrategy(
@@ -171,10 +175,7 @@ router.route('/users')
               }
             else
               {
-                var token;
-                token = user.generateJwt();
-                res.status(200);
-                res.json({ message: 'User created!', "token" : token });
+                res.json({ message: 'User created!' });
               }  
 
         });
@@ -201,19 +202,9 @@ router.route('/current_user')
 
     })
       
-    .get(auth, function(req, res) {
+    .get(checkAuthentication, function(req, res) {
 
-      // If no user ID exists in the JWT return a 401
-      if (!req.payload._id) {
-        res.status(401).json({
-          "message" : "UnauthorizedError"
-        });
-      } else {
-        Users.findById(req.payload._id).exec(function(err, user) {
-            res.status(200).json(user);
-          });
-      }
-      
+        res.json({username: req.username});
     });
 
 //LOGIN
@@ -232,8 +223,6 @@ router.post('/login', passport.authenticate('local',
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
-    var token;
-
     if (err) {
       console.log("Error: " + err); 
       return next(err); 
@@ -256,8 +245,8 @@ router.post('/login', function(req, res, next) {
         return res.redirect(req.session.returnTo);
       }
 
-      token = user.generateJwt();
-      return res.status(200).json({status: "Success", "token" : token});
+
+      return res.status(200).json({status: "Success"});
     
       
     });
