@@ -13,7 +13,7 @@ var cors = require('cors');
  
 var RedisStore = require('connect-redis')(session);
 var app = express();
-app.use(cors({credentials: true, origin: 'localhost:4200'}));
+//app.use(cors({credentials: true, origin: 'localhost:4200'}));
 //////////////////////////////
 
 var allowCrossDomain = function(req, res, next) {
