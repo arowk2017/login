@@ -247,7 +247,7 @@ router.post('/login', function(req, res, next) {
         console.log("Error while login: " + err_login); 
         return next(err_login); 
       }
-
+/*
       req.session.messages = "Login successfull";
       req.session.authenticated = true;
       req.authenticated = true;
@@ -255,7 +255,7 @@ router.post('/login', function(req, res, next) {
       if (req.session.returnTo){
         return res.redirect(req.session.returnTo);
       }
-
+*/
       token = user.generateJwt();
       return res.status(200).json({status: "Success", "token" : token});
     
