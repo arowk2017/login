@@ -125,7 +125,8 @@ passport.deserializeUser(function(id, done) {
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
-app.use(cors());
+//app.use(cors()); 
+app.use(cors({credentials: true, origin: 'localhost:4200'}));
 
 app.get('/', function(request, response) {
  response.send('Demo-login');
