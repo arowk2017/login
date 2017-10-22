@@ -15,6 +15,7 @@ var RedisStore = require('connect-redis')(session);
 var app = express();
 
 //////////////////////////////
+/*
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -28,6 +29,7 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
+*/
 ///////////////////////////////
 
 var mongoose = require('mongoose');
@@ -39,7 +41,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(allowCrossDomain);
+//app.use(allowCrossDomain);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));

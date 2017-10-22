@@ -37,7 +37,11 @@ export class LoginComponent implements OnInit {
       'password' : value.password,  
     };
      
-    this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers, withCredentials: true });
+
+    this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form, options).subscribe(
       (res:any)=>{
         
         if (res.status === 200) {
