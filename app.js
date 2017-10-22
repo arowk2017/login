@@ -15,12 +15,11 @@ var RedisStore = require('connect-redis')(session);
 var app = express();
 //app.use(cors({credentials: true, origin: 'localhost:4200'}));
 //////////////////////////////
-
+/*
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.header('Access-Control-Allow-Credentials', true);
 
     // intercept OPTIONS method
     if ('OPTIONS' == req.method) {
@@ -30,7 +29,7 @@ var allowCrossDomain = function(req, res, next) {
       next();
     }
 };
-
+*/
 ///////////////////////////////
 
 var mongoose = require('mongoose');
@@ -42,7 +41,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(allowCrossDomain);
+//app.use(allowCrossDomain);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
@@ -217,7 +216,7 @@ router.post('/login', passport.authenticate('local',
 
   */
 
-router.post('/login', function(req, res, next) {
+router.post('/login', cors(), function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       console.log("Error: " + err); 
