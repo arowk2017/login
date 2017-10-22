@@ -13,6 +13,11 @@ var cors = require('cors');
  
 var RedisStore = require('connect-redis')(session);
 var app = express();
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200 
+}
+app.options('*', cors(corsOptions));
 //app.use(cors({credentials: true, origin: 'localhost:4200'}));
 //////////////////////////////
 /*
@@ -216,7 +221,7 @@ router.post('/login', passport.authenticate('local',
 
   */
 
-router.post('/login', cors(), function(req, res, next) {
+router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) {
       console.log("Error: " + err); 
