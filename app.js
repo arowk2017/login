@@ -7,8 +7,9 @@ var Users = require('./models/users');
 var cors = require('cors');
 var passport = require('passport'),
 LocalStrategy = require('passport-local').Strategy;
+var cors = require('cors'); 
 var app = express();
-
+app.use(cors());
 var jwt = require('express-jwt');
 var auth = jwt({
   secret: process.env.LOGIN_SECRET,
