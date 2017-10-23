@@ -14,24 +14,6 @@ var auth = jwt({
   secret: process.env.LOGIN_SECRET,
   userProperty: 'payload'
 });
-//app.use(cors({credentials: true, origin: 'localhost:4200'}));
-//////////////////////////////
-/*
-var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-    // intercept OPTIONS method
-    if ('OPTIONS' == req.method) {
-      res.send(200);
-    }
-    else {
-      next();
-    }
-};
-*/
-///////////////////////////////
 
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -39,56 +21,13 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() =>  console.log('connection successful'))
   .catch((err) => console.error(err));
 
-
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-//app.use(allowCrossDomain);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
 
-/////////////////////////////////
-
-
-    //var rtg   = require("url").parse(process.env.REDISTOGO_URL);
-    //var redis = require("redis").createClient(rtg.port, rtg.hostname);
 var redis = require("redis").createClient(process.env.REDISTOGO_URL);
-//var redisUrl = url.parse(process.env.REDISTOGO_URL);
-        //var redisAuth = redisUrl.auth.split(':'); 
-/*
-var redisOptions = {
-   //host: redisUrl.hostname,
-            //port: redisUrl.port,
-            //db: redisAuth[0],
-           //pass: redisAuth[1],
-     client: redis,
-     //url: process.env.REDISTOGO_URL,
-     logErrors: true
-     //ttl: SESSION_TTL
- };
-
-var redisStore = new RedisStore(redisOptions);
-//app.use(cookieParser()); 
-app.set('trust proxy', 1);
-app.use(session({
-    store: redisStore,
-     secret: 'codecliquesoftwarellc',
-     resave: false,
-  saveUninitialized: false,
-  cookie: { secure: true }
-}));
-
-app.use(function (req, res, next) {
-    console.log(req.session);
-  if (!req.session) {
-    return next(new Error('oh no')) // handle error
-  }
-  next() // otherwise continue
-})
-// and use it in application
-//app.use(session);
-*/
-/////////////////////////////////////
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
@@ -106,9 +45,6 @@ passport.use(new LocalStrategy(
   }
 ));
 
-//passport.serializeUser(Users.serializeUser());
-//passport.deserializeUser(Users.deserializeUser());
-
 passport.serializeUser(function(user, done) {
     console.log(user);
     done(null, user.id);
@@ -121,11 +57,8 @@ passport.deserializeUser(function(id, done) {
   });
 
 
-// read cookies (needed for auth)
- 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-//app.use(cors()); 
 
 
 app.get('/', function(request, response) {
@@ -135,12 +68,6 @@ app.get('/', function(request, response) {
 app.get('/login_fail', function(request, response) {
  response.status(401).json({ message: 'Login Failed!' });
 });
-
-/*
-app.get('/login_success', checkAuthentication, function(request, response) {
- response.status(200).json({status: "Success"});
-});
-*/
 
 
 var router = express.Router();             
@@ -216,18 +143,6 @@ router.route('/current_user')
     });
 
 //LOGIN
-/*
-router.post('/login', passport.authenticate('local',
-  function(req, res) {
-    // If this function gets called, authentication was successful.
-    // `req.user` contains the authenticated user.
-    // Then you can send your json as response.
-    console.log(req.user);
-    res.json({message:"Login Success", username: req.user,
-  userid: req.user._id});
-  }));
-
-  */
 
 router.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -246,15 +161,7 @@ router.post('/login', function(req, res, next) {
         console.log("Error while login: " + err_login); 
         return next(err_login); 
       }
-/*
-      req.session.messages = "Login successfull";
-      req.session.authenticated = true;
-      req.authenticated = true;
 
-      if (req.session.returnTo){
-        return res.redirect(req.session.returnTo);
-      }
-*/
       token = user.generateJwt();
       return res.status(200).json({status: "Success", "token" : token});
     
@@ -263,25 +170,6 @@ router.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-
-/*
-  router.post('/login',  passport.authenticate('local', { successRedirect: '/login_success',
-                                   failureRedirect: '/login_fail',
-                                   failureFlash: 'Invalid username or password.' }));
-*/
-
-/*
-router.post('/login', function(req, res) {
-     passport.authenticate('local', function(err, user, info) {
-        if (err) { return next(err); }
-        if (!user) { return res.json({message: "User does not exist"}); }
-        req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        return res.json({message: "Logged In"});
-        });
-    })(req, res, next);
-});
-*/
 router.route('/logout')
 
     .get(function(req, res) {

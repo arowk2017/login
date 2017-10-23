@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AsyncLocalStorage } from 'angular-async-local-storage';
+import * as JWT from 'jwt-decode';
 
 @Injectable()
 export class LoginService {
@@ -7,46 +8,42 @@ export class LoginService {
   constructor(protected storage: AsyncLocalStorage) { }
 
   saveToken(token) {
-        this.storage.setItem('user_token', token).subscribe(() => {});
+    
+        localStorage.setItem('user_token', JSON.stringify(token));
   }
 
   logout() {
-        this.storage.removeItem('user_token').subscribe(() => {}, () => {});
+        localStorage.removeItem('user_token');
   }
 
   getToken() {
     var token;
-        this.storage.getItem('user_token').subscribe((data) => {
-           token = data;
-        });
-        return token;
+    return token = localStorage.getItem('user_token');
+    
   }
 
   currentUser() {
-        if(this.isLoggedIn()){
-    var token = this.getToken();
-    var payload = token.split('.')[1];
-    payload = atob(payload);
-    payload = JSON.parse(payload);
-    
-    return {
-      username : payload.username
-    };
-  }
+    if(this.isLoggedIn()){
+      var payload = JWT(this.getToken());
+      return payload;
+    }
   }
 
   isLoggedIn() {
-        var token = this.getToken();
-  var payload;
+    var token = this.getToken();
+    var payload;
 
   if(token){
-    payload = token.split('.')[1];
-    payload = atob(payload);
-    payload = JSON.parse(payload);
-
+    payload = JWT(token);
     return payload.exp > Date.now() / 1000;
   } else {
     return false;
   }
+  }
+
+  parseJwt(token){
+    var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace('-', '+').replace('_', '/');
+  return JSON.parse(atob(base64));
   }
 }
