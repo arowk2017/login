@@ -1,5 +1,6 @@
 
 # DemoLogin
 
-Simple login screen
+Simple login screen using Mongo, Angular 4, Express, NodeJS
+
 
