@@ -38,7 +38,7 @@ mongoose.connect(process.env.MONGODB_URI)
 
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.use(allowCrossDomain);
+//app.use(allowCrossDomain);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'true'}));
