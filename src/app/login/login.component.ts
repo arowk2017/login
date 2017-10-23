@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       'password' : value.password,  
     };
 
-         this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
+         this.http.post('https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
 
       (res:any)=>{
         
