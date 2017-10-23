@@ -36,13 +36,14 @@ export class LoginComponent implements OnInit {
       'username' : value.username,
       'password' : value.password,  
     };
+
          this.http.post('https://cors-anywhere.herokuapp.com/https://arowk2017-demo-login.herokuapp.com/api/login', form).subscribe(
 
       (res:any)=>{
         
         if (res.status === 200) {
                         let data = res.json();
-                          console.log(data);
+                          
                           this.loginService.saveToken(data.token);
                           this._router.navigate(['/home']);
                     }
